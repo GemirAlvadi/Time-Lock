@@ -1,0 +1,26 @@
+
+pragma solidity ^0.8.0;
+
+contract TimeLockedWallet {
+    address public owner;
+    uint256 public unlockTime;
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only the owner can call this function.");
+        _;
+    }
+
+    modifier onlyAfterUnlock() {
+        require(block.timestamp >= unlockTime, "The wallet is still locked.");
+        _;
+    }
+
+    constructor(uint256 _unlockTime) {
+        owner = msg.sender;
+        unlockTime = _unlockTime;
+    }
+
+    function withdraw() public onlyOwner onlyAfterUnlock {
+        // Perform the withdrawal logic here
+    }
+}
